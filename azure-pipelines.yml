@@ -6,8 +6,7 @@
 trigger:
 - features/*
 
-pool:
-  vmImage: 'ubuntu-latest'
+pool: "Requiem Labs"
 
 steps:
 - task: Pester@10
