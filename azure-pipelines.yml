@@ -10,8 +10,13 @@ trigger:
 pool: "Requiem Labs"
 
 steps:
-- task: Pester@10
+- task: PowerShell@2
+  displayName: "Check Pester Install"
   inputs:
-    scriptFolder: '$(System.DefaultWorkingDirectory)\test\*'
-    resultsFile: '$(System.DefaultWorkingDirectory)\Test-Pester.XML'
-    usePSCore: False
+    targetType: 'inline'
+    script: |
+      $modules = Get-Module -list
+      if ($modules.Name -notcontains 'pester') {
+          Install-Module -Name Pester -Force -SkipPublisherCheck
+      }
+
