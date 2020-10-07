@@ -1,6 +1,6 @@
 $here = (Split-Path -Parent $MyInvocation.MyCommand.Path)
 $testXmlPath = $here + "\Version.xml"
-Write-Host $testXmlPath
+Write-Host "Xml path should be $testXmlPath"
 
 function GetXmlValue ([string]$Identifier) {
     $xml = New-Object -TypeName XML
@@ -10,7 +10,7 @@ function GetXmlValue ([string]$Identifier) {
     return $currentNode.Node.Version
 }
 
-Describe ".\SimpleSemVer.tests.ps1"{
+Describe "SimpleSemVer.ps1"{
     Context "Only Patch" {
         try {
             ..\src\SimpleSemVer.ps1 -Path $testXmlPath -IncrementPatch
