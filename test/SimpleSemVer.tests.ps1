@@ -13,7 +13,7 @@ function GetXmlValue ([string]$Identifier) {
 Describe "SimpleSemVer.ps1"{
     Context "Only Patch" {
         try {
-            ..\src\SimpleSemVer.ps1 -Path $testXmlPath -IncrementPatch
+            &(Resolve-Path "$here\..\src\SimpleSemVer.ps1") -Path $testXmlPath -IncrementPatch
             $version = GetXmlValue -Identifier "Patch"
             It "Increments only the Patch version" {
                 $version | Should -Be "1"
@@ -26,7 +26,7 @@ Describe "SimpleSemVer.ps1"{
     }
     Context "Only Minor" {
         try {
-            ..\src\SimpleSemVer.ps1 -Path $testXmlPath -IncrementMinor
+            &(Resolve-Path "$here\..\src\SimpleSemVer.ps1") -Path $testXmlPath -IncrementMinor
             $version = GetXmlValue -Identifier "Minor"
             It "Increments only the Minor version" {
                 $version | Should -Be "1"
@@ -39,7 +39,7 @@ Describe "SimpleSemVer.ps1"{
     }
     Context "Only Major" {
         try {
-            ..\src\SimpleSemVer.ps1 -Path $testXmlPath -IncrementMajor
+            &(Resolve-Path "$here\..\src\SimpleSemVer.ps1") -Path $testXmlPath -IncrementMajor
             $version = GetXmlValue -Identifier "Major"
             It "Increments only the Major version" {
                 $version | Should -Be "1"
@@ -52,9 +52,9 @@ Describe "SimpleSemVer.ps1"{
     }
     Context "Minor and Patch" {
         try {
-            ..\src\SimpleSemVer.ps1 -Path $testXmlPath -IncrementPatch
+            &(Resolve-Path "$here\..\src\SimpleSemVer.ps1") -Path $testXmlPath -IncrementPatch
             $firstPatch = GetXmlValue -Identifier "Patch"
-            ..\src\SimpleSemVer.ps1 -Path $testXmlPath -IncrementMinor
+            &(Resolve-Path "$here\..\src\SimpleSemVer.ps1") -Path $testXmlPath -IncrementMinor
             $firstMinor = GetXmlValue -Identifier "Minor"
             $secondPatch = GetXmlValue -Identifier "Patch"
             It "Sets the Patch version first" {
