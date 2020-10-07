@@ -12,16 +12,16 @@ function GetXmlValue ([string]$Identifier) {
 
 Describe ".\SimpleSemVer.tests.ps1"{
     Context "Only Patch" {
-        It "Increments only the Patch version" {
-            try {
-                ..\src\SimpleSemVer.ps1 -Path $testXmlPath -IncrementPatch
-                $version = GetXmlValue -Identifier "Patch"
+        try {
+            ..\src\SimpleSemVer.ps1 -Path $testXmlPath -IncrementPatch
+            $version = GetXmlValue -Identifier "Patch"
+            It "Increments only the Patch version" {
                 $version | Should -Be "1"
             }
-            finally {
-                # need to delete after every test
-                Remove-Item -Path $testXmlPath
-            }
+        }
+        finally {
+            # need to delete after every test
+            Remove-Item -Path $testXmlPath
         }
     }
     Context "Only Minor" {
