@@ -1,8 +1,10 @@
 $here = (Split-Path -Parent $MyInvocation.MyCommand.Path)
 $testXmlPath = $here + "\Version.xml"
 Write-Host "Xml path should be $testXmlPath"
+Write-Host "SimpleSemVer path should be $(Resolve-Path "$here\..\src\SimpleSemVer.ps1")"
 
 function GetXmlValue ([string]$Identifier) {
+    Write-Host "Xml path to load should be $testXmlPath"
     $xml = New-Object -TypeName XML
     $xml.Load($testXmlPath)
 
