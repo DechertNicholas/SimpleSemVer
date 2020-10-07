@@ -4,7 +4,8 @@
 # https://aka.ms/yaml
 
 trigger:
-- features/
+- features/*
+- master
 
 pool: "Requiem Labs"
 
