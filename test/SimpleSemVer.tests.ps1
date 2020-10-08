@@ -28,7 +28,7 @@ Describe "SimpleSemVer.ps1"{
         }
         finally {
             # need to delete after every test
-            Remove-Item -Path $script:testXmlPath
+            Remove-Item -Path $script:testXmlPath -ErrorAction Continue
         }
     }
     Context "Only Patch" {
@@ -46,7 +46,7 @@ Describe "SimpleSemVer.ps1"{
         }
         finally {
             # need to delete after every test
-            Remove-Item -Path $script:testXmlPath
+            Remove-Item -Path $script:testXmlPath -ErrorAction Continue
         }
     }
     Context "Only Minor" {
@@ -62,7 +62,7 @@ Describe "SimpleSemVer.ps1"{
         }
         finally {
             # need to delete after every test
-            Remove-Item -Path $script:testXmlPath
+            Remove-Item -Path $script:testXmlPath -ErrorAction Continue
         }
     }
     Context "Only Major" {
@@ -78,7 +78,7 @@ Describe "SimpleSemVer.ps1"{
         }
         finally {
             # need to delete after every test
-            Remove-Item -Path $script:testXmlPath
+            Remove-Item -Path $script:testXmlPath -ErrorAction Continue
         }
     }
     Context "Minor and Patch" {
@@ -103,7 +103,7 @@ Describe "SimpleSemVer.ps1"{
         }
         finally {
             # need to delete after every test
-            Remove-Item -Path $script:testXmlPath
+            Remove-Item -Path $script:testXmlPath -ErrorAction Continue
         }
     }
 }
