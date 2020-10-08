@@ -5,7 +5,7 @@ Write-Host "Tests in $testDir"
 Import-Module Pester
 Get-Module Pester
 if ($env:TF_BUILD) {
-    Invoke-Pester -Script "$testDir\*" -OutputFile "$($env:Common_TestResultsDirectory)/TestResults.xml" -OutputFormat "NUnitXml" -
+    Invoke-Pester -Script "$testDir\*" -OutputFile "$($env:Common_TestResultsDirectory)/TestResults.xml" -OutputFormat "UnitXml"
 }
 else {
     Invoke-Pester -Script "$testDir\*"
