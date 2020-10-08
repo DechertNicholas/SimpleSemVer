@@ -22,6 +22,7 @@ Describe "SimpleSemVer.ps1"{
             $exists | Should -Be $true
         }
         # need to delete after every test
+        Write-Host "Removing Version file from $($script:testXmlPath)"
         Remove-Item -Path $script:testXmlPath -ErrorAction Continue
     }
     # Context "Only Patch" {
