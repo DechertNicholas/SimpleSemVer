@@ -16,12 +16,20 @@ function GetXmlValue ([string]$Identifier) {
 Describe "SimpleSemVer.ps1"{
     Context "File Creation" {
         It "Creates the Version file if it does not exist" {
-            Write-Verbose "Trying to run $(Resolve-Path "$here\..\src\SimpleSemVer.ps1")"
-            &(Resolve-Path "$here\..\src\SimpleSemVer.ps1") -Path $script:testXmlPath -IncrementPatch
-            $exists = Test-Path $script:testXmlPath
-            $exists | Should -Be $true
-            # delete after tests (useful for local runs)
-            Remove-Item -Path $script:testXmlPath
+            try {
+                Write-Verbose "Trying to run $(Resolve-Path "$here\..\src\SimpleSemVer.ps1")"
+                &(Resolve-Path "$here\..\src\SimpleSemVer.ps1") -Path $script:testXmlPath -IncrementPatch
+                $exists = Test-Path "$script:testXmlPath"
+                $exists | Should -Be $true
+            }
+            catch {
+                Write-Error $_
+            }
+            finally {
+                # delete after test (useful for local runs)
+                Remove-Item -Path $script:testXmlPath
+            }
+
         }
     }
     # Context "Only Patch" {
