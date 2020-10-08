@@ -27,7 +27,7 @@ steps:
 - task: PublishTestResults@2
   displayName: 'Upload Test Results'
   inputs:
-    testResultsFormat: 'XUnit'
+    testResultsFormat: 'NUnit'
     testResultsFiles: '**/TEST*.xml'
     searchFolder: '$(Common.TestResultsDirectory)'
     failTaskOnFailedTests: true
