@@ -20,67 +20,79 @@ Describe "SimpleSemVer.ps1"{
             Get-ChildItem $here
         }
     }
-    Context "Only Patch" {
-        try {
-            $debugText = Resolve-Path "$here\..\src\SimpleSemVer.ps1"
-            Write-Host "Should still be $debugText"
-            &(Resolve-Path "$here\..\src\SimpleSemVer.ps1") -Path $testXmlPath -IncrementPatch
-            $version = GetXmlValue -Identifier "Patch"
-            It "Increments only the Patch version" {
-                $version | Should -Be "1"
-            }
-        }
-        finally {
-            # need to delete after every test
-            Remove-Item -Path $testXmlPath
-        }
-    }
-    Context "Only Minor" {
-        try {
-            &(Resolve-Path "$here\..\src\SimpleSemVer.ps1") -Path $testXmlPath -IncrementMinor
-            $version = GetXmlValue -Identifier "Minor"
-            It "Increments only the Minor version" {
-                $version | Should -Be "1"
-            }
-        }
-        finally {
-            # need to delete after every test
-            Remove-Item -Path $testXmlPath
-        }
-    }
-    Context "Only Major" {
-        try {
-            &(Resolve-Path "$here\..\src\SimpleSemVer.ps1") -Path $testXmlPath -IncrementMajor
-            $version = GetXmlValue -Identifier "Major"
-            It "Increments only the Major version" {
-                $version | Should -Be "1"
-            }
-        }
-        finally {
-            # need to delete after every test
-            Remove-Item -Path $testXmlPath
-        }
-    }
-    Context "Minor and Patch" {
-        try {
-            &(Resolve-Path "$here\..\src\SimpleSemVer.ps1") -Path $testXmlPath -IncrementPatch
-            $firstPatch = GetXmlValue -Identifier "Patch"
-            &(Resolve-Path "$here\..\src\SimpleSemVer.ps1") -Path $testXmlPath -IncrementMinor
-            $firstMinor = GetXmlValue -Identifier "Minor"
-            $secondPatch = GetXmlValue -Identifier "Patch"
-            It "Sets the Patch version first" {
-                $firstPatch | Should -Be "1"
-            }
-            It "Sets the Minor version second" {
-                $firstMinor | Should -Be "1"
-            }
-            It "Resets the Patch version when Minor increments" {
-                $secondPatch | Should -Be "0"
-            }
-        }
-        finally {
-            # need to delete after every test
-            Remove-Item -Path $testXmlPath
-        }
-    }
+    # Context "Only Patch" {
+    #     try {
+    #         $debugText = Resolve-Path "$here\..\src\SimpleSemVer.ps1"
+    #         Write-Host "Should still be $debugText"
+    #         &(Resolve-Path "$here\..\src\SimpleSemVer.ps1") -Path $testXmlPath -IncrementPatch
+    #         $version = GetXmlValue -Identifier "Patch"
+    #         It "Increments only the Patch version" {
+    #             $version | Should -Be "1"
+    #         }
+    #     }
+    #     catch {
+    #         Write-Error $_
+    #     }
+    #     finally {
+    #         # need to delete after every test
+    #         Remove-Item -Path $testXmlPath
+    #     }
+    # }
+    # Context "Only Minor" {
+    #     try {
+    #         &(Resolve-Path "$here\..\src\SimpleSemVer.ps1") -Path $testXmlPath -IncrementMinor
+    #         $version = GetXmlValue -Identifier "Minor"
+    #         It "Increments only the Minor version" {
+    #             $version | Should -Be "1"
+    #         }
+    #     }
+    #     catch {
+    #         Write-Error $_
+    #     }
+    #     finally {
+    #         # need to delete after every test
+    #         Remove-Item -Path $testXmlPath
+    #     }
+    # }
+    # Context "Only Major" {
+    #     try {
+    #         &(Resolve-Path "$here\..\src\SimpleSemVer.ps1") -Path $testXmlPath -IncrementMajor
+    #         $version = GetXmlValue -Identifier "Major"
+    #         It "Increments only the Major version" {
+    #             $version | Should -Be "1"
+    #         }
+    #     }
+    #     catch {
+    #         Write-Error $_
+    #     }
+    #     finally {
+    #         # need to delete after every test
+    #         Remove-Item -Path $testXmlPath
+    #     }
+    # }
+    # Context "Minor and Patch" {
+    #     try {
+    #         &(Resolve-Path "$here\..\src\SimpleSemVer.ps1") -Path $testXmlPath -IncrementPatch
+    #         $firstPatch = GetXmlValue -Identifier "Patch"
+    #         &(Resolve-Path "$here\..\src\SimpleSemVer.ps1") -Path $testXmlPath -IncrementMinor
+    #         $firstMinor = GetXmlValue -Identifier "Minor"
+    #         $secondPatch = GetXmlValue -Identifier "Patch"
+    #         It "Sets the Patch version first" {
+    #             $firstPatch | Should -Be "1"
+    #         }
+    #         It "Sets the Minor version second" {
+    #             $firstMinor | Should -Be "1"
+    #         }
+    #         It "Resets the Patch version when Minor increments" {
+    #             $secondPatch | Should -Be "0"
+    #         }
+    #     }
+    #     catch {
+    #         Write-Error $_
+    #     }
+    #     finally {
+    #         # need to delete after every test
+    #         Remove-Item -Path $testXmlPath
+    #     }
+    # }
 }
