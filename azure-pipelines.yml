@@ -11,12 +11,13 @@ pool: "Requiem Labs"
 
 steps:
 - task: PowerShell@2
-  displayName: "Check Pester Install"
+  displayName: 'Install Pester'
   inputs:
-    targetType: 'inline'
-    script: |
-      $modules = Get-Module -list
-      if ($modules.Name -notcontains 'pester') {
-          Install-Module -Name Pester -Force -SkipPublisherCheck
-      }
+    filePath: 'AzureHelperFunctions/InstallPester.ps1'
+    workingDirectory: '$(Pipeline.Workspace)/s'
 
+- task: PowerShell@2
+  displayName: 'Run Pester Tests'
+  inputs:
+    filePath: 'AzureHelperFunctions/RunPester.ps1'
+    workingDirectory: '$(Pipeline.Workspace)/s'

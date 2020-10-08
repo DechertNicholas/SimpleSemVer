@@ -15,6 +15,8 @@ function GetXmlValue ([string]$Identifier) {
 Describe "SimpleSemVer.ps1"{
     Context "Only Patch" {
         try {
+            $debugText = Resolve-Path "$here\..\src\SimpleSemVer.ps1"
+            Write-Host "Should still be $debugText"
             &(Resolve-Path "$here\..\src\SimpleSemVer.ps1") -Path $testXmlPath -IncrementPatch
             $version = GetXmlValue -Identifier "Patch"
             It "Increments only the Patch version" {
