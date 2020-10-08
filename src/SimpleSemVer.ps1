@@ -96,9 +96,9 @@ function IncrementPatch {
     $xml.Save($Path)
 }
 
-Write-Output "Testing path"
+Write-Host "Testing path"
 if (!(Test-Path $Path)) {
-    Write-Output "File not found, generating an empty xml"
+    Write-Host "File not found, generating an empty xml"
     GenerateXmlTemplate
 }
 
