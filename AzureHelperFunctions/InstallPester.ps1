@@ -1,3 +1,4 @@
+$ErrorActionPreference = "Stop"
 Write-Host "Checking if pester is installed..."
 $modules = Get-Module -ListAvailable
 if ($modules.Name -notcontains 'pester') {
@@ -11,3 +12,6 @@ if ($modules.Name -notcontains 'pester') {
     }
 }
 Write-Host "Pester is installed. Version info:"
+Import-Module Pester
+Get-Module -Name Pester
+Remove-Module Pester

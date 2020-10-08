@@ -1,5 +1,7 @@
+$ErrorActionPreference = "Stop"
 $here = (Split-Path -Parent $MyInvocation.MyCommand.Path)
 $script:testXmlPath = $here + "\Version.xml"
+Write-Host "Current location is $here"
 Write-Host "Xml path should be $script:testXmlPath"
 Write-Host "SimpleSemVer path should be $(Resolve-Path "$here\..\src\SimpleSemVer.ps1")"
 
@@ -14,9 +16,12 @@ function GetXmlValue ([string]$Identifier) {
 Describe "SimpleSemVer.ps1"{
     Context "File Creation" {
         It "Creates the Version file if it does not exist" {
+            Write-Verbose "Trying to run $(Resolve-Path "$here\..\src\SimpleSemVer.ps1")"
             &(Resolve-Path "$here\..\src\SimpleSemVer.ps1") -Path $script:testXmlPath -IncrementPatch
             $exists = Test-Path $script:testXmlPath
             $exists | Should -Be $true
+            # delete after tests (useful for local runs)
+            Remove-Item -Path $script:testXmlPath
         }
     }
     # Context "Only Patch" {
@@ -95,5 +100,3 @@ Describe "SimpleSemVer.ps1"{
     #     }
     # }
 }
-# delete after tests (useful for local runs)
-Remove-Item -Path $script:testXmlPath
