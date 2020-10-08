@@ -3,7 +3,15 @@
 Param(
     [Parameter(Mandatory = $true)]
     [String]
-    $Path,
+    $File,
+
+    [Parameter(ParameterSetName = "GetValueWithoutSpecial")]
+    [Switch]
+    $GetVersionValue,
+
+    [Parameter(ParameterSetName = "GetValueWithSpecial")]
+    [Switch]
+    $GetVersionValueWithSpecial,
 
     [Parameter(ParameterSetName = "Major")]
     [Switch]
@@ -15,16 +23,16 @@ Param(
 
     [Parameter(ParameterSetName = "Patch")]
     [Switch]
-    $IncrementPatch#,
+    $IncrementPatch,
 
-    # [Parameter()]
-    # [String]
-    # $Special
+    [Parameter(ParameterSetName = "Special")]
+    [String]
+    $Special
 )
 
 function GenerateXmlTemplate {
     # get an XMLTextWriter to create the XML
-    $XmlWriter = New-Object System.XMl.XmlTextWriter($Path,$Null)
+    $XmlWriter = New-Object System.XMl.XmlTextWriter($File,$Null)
 
     # choose a pretty formatting:
     $XmlWriter.Formatting = 'Indented'
@@ -54,7 +62,7 @@ function GenerateXmlTemplate {
     $XmlWriter.WriteEndElement()
 
     $XmlWriter.WriteStartElement('Special')
-    $XmlWriter.WriteElementString('Version', '-SpecialText')
+    $XmlWriter.WriteElementString('Version', '')
     $XmlWriter.WriteEndElement()
 
     # finalize the document:
@@ -65,7 +73,7 @@ function GenerateXmlTemplate {
 
 function IncrementMajor {
     $xml = New-Object -TypeName XML
-    $xml.Load($Path)
+    $xml.Load($File)
 
     $currentMajorNode = Select-Xml -Xml $xml -XPath '/VersionInfo/Major'
     $currentMinorNode = Select-Xml -Xml $xml -XPath '/VersionInfo/Minor'
@@ -73,36 +81,77 @@ function IncrementMajor {
     $currentMajorNode.Node.Version = [string]([int]$currentMajorNode.Node.Version + 1)
     $currentMinorNode.Node.Version = "0"
     $currentPatchNode.Node.Version = "0"
-    $xml.Save($Path)
+    $xml.Save($File)
 }
 
 function IncrementMinor {
     $xml = New-Object -TypeName XML
-    $xml.Load($Path)
+    $xml.Load($File)
 
     $currentMinorNode = Select-Xml -Xml $xml -XPath '/VersionInfo/Minor'
     $currentPatchNode = Select-Xml -Xml $xml -XPath '/VersionInfo/Patch'
     $currentMinorNode.Node.Version = [string]([int]$currentMinorNode.Node.Version + 1)
     $currentPatchNode.Node.Version = "0"
-    $xml.Save($Path)
+    $xml.Save($File)
 }
 
 function IncrementPatch {
     $xml = New-Object -TypeName XML
-    $xml.Load($Path)
+    $xml.Load($File)
 
     $currentPatchNode = Select-Xml -Xml $xml -XPath '/VersionInfo/Patch'
     $currentPatchNode.Node.Version = [string]([int]$currentPatchNode.Node.Version + 1)
-    $xml.Save($Path)
+    $xml.Save($File)
+}
+
+function SetSpecial {
+    $xml = New-Object -TypeName XML
+    $xml.Load($File)
+
+    $currentSpecialNode = Select-Xml -Xml $xml -XPath '/VersionInfo/Special'
+    $currentSpecialNode.Node.Version = $Special
+    $xml.Save($File)
+}
+
+function GetXmlValueWithoutSpecial([string]$File) {
+    $xml = New-Object -TypeName XML
+    $xml.Load($File)
+
+    $currentMajor = (Select-Xml -Xml $xml -XPath "/VersionInfo/Major").Node.Version
+    $currentMinor = (Select-Xml -Xml $xml -XPath "/VersionInfo/Minor").Node.Version
+    $currentPatch = (Select-Xml -Xml $xml -XPath "/VersionInfo/Patch").Node.Version
+    #
+    return "$($currentMajor).$($currentMinor).$($currentPatch)" #$($currentSpecial)"
+}
+
+function GetXmlValueWithSpecial([String]$File) {
+    $xml = New-Object -TypeName XML
+    $xml.Load($File)
+
+    $nonSpecialVersion = GetXmlValueWithoutSpecial($File)
+    $currentSpecial = (Select-Xml -Xml $xml -XPath "/VersionInfo/Special").Node.Version
+    return "$nonSpecialVersion" + "$currentSpecial"
+}
+
+# path resolution
+if ($File -notlike "*:*") {
+    # user has not provided the full path, need to interpret relative path
+    $File = Join-Path -Path (Convert-Path .) -ChildPath $File
 }
 
 Write-Verbose "Testing path"
-if (!(Test-Path $Path)) {
+if (!(Test-Path $File)) {
     Write-Verbose "File not found, generating an empty xml"
     GenerateXmlTemplate
 }
 
 switch ($PSCmdlet.ParameterSetName) {
+    'GetValueWithoutSpecial' {
+        GetXmlValueWithoutSpecial($File)
+    }
+    'GetValueWithSpecial' {
+        GetXmlValueWithSpecial($File)
+    }
     'Major' {
         IncrementMajor
     }
@@ -113,5 +162,9 @@ switch ($PSCmdlet.ParameterSetName) {
 
     'Patch' {
         IncrementPatch
+    }
+
+    'Special' {
+        SetSpecial
     }
 }
