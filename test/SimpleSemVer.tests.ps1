@@ -4,7 +4,6 @@ Write-Host "Xml path should be $script:testXmlPath"
 Write-Host "SimpleSemVer path should be $(Resolve-Path "$here\..\src\SimpleSemVer.ps1")"
 
 function GetXmlValue ([string]$Identifier) {
-    Write-Host "Xml path to load should be $script:testXmlPath"
     $xml = New-Object -TypeName XML
     $xml.Load($script:testXmlPath)
 
@@ -15,15 +14,10 @@ function GetXmlValue ([string]$Identifier) {
 Describe "SimpleSemVer.ps1"{
     Context "File Creation" {
         It "Creates the Version file if it does not exist" {
-            Write-Host "Xml Path should still be $script:testXmlPath"
-            Write-Host "Here is $here"
             &(Resolve-Path "$here\..\src\SimpleSemVer.ps1") -Path $script:testXmlPath -IncrementPatch
             $exists = Test-Path $script:testXmlPath
             $exists | Should -Be $true
         }
-        # need to delete after every test
-        Write-Host "Removing Version file from $($script:testXmlPath)"
-        Remove-Item -Path $script:testXmlPath -ErrorAction Continue
     }
     # Context "Only Patch" {
     #     try {
@@ -101,3 +95,5 @@ Describe "SimpleSemVer.ps1"{
     #     }
     # }
 }
+# delete after tests (useful for local runs)
+Remove-Item -Path $script:testXmlPath
