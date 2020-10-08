@@ -1,12 +1,12 @@
 $here = (Split-Path -Parent $MyInvocation.MyCommand.Path)
-$testXmlPath = $here + "\Version.xml"
-Write-Host "Xml path should be $testXmlPath"
+$script:testXmlPath = $here + "\Version.xml"
+Write-Host "Xml path should be $script:testXmlPath"
 Write-Host "SimpleSemVer path should be $(Resolve-Path "$here\..\src\SimpleSemVer.ps1")"
 
 function GetXmlValue ([string]$Identifier) {
-    Write-Host "Xml path to load should be $testXmlPath"
+    Write-Host "Xml path to load should be $script:testXmlPath"
     $xml = New-Object -TypeName XML
-    $xml.Load($testXmlPath)
+    $xml.Load($script:testXmlPath)
 
     $currentNode = Select-Xml -Xml $xml -XPath "/VersionInfo/$Identifier"
     return $currentNode.Node.Version
@@ -15,16 +15,16 @@ function GetXmlValue ([string]$Identifier) {
 Describe "SimpleSemVer.ps1"{
     Context "File Creation" {
         It "Creates the Version file if it does not exist" {
-            Write-Host "Xml Path should still be $testXmlPath"
+            Write-Host "Xml Path should still be $script:testXmlPath"
             Write-Host "Here is $here"
-            #&(Resolve-Path "$here\..\src\SimpleSemVer.ps1") -Path $testXmlPath -IncrementPatch
+            #&(Resolve-Path "$here\..\src\SimpleSemVer.ps1") -Path $script:testXmlPath -IncrementPatch
         }
     }
     # Context "Only Patch" {
     #     try {
     #         $debugText = Resolve-Path "$here\..\src\SimpleSemVer.ps1"
     #         Write-Host "Should still be $debugText"
-    #         &(Resolve-Path "$here\..\src\SimpleSemVer.ps1") -Path $testXmlPath -IncrementPatch
+    #         &(Resolve-Path "$here\..\src\SimpleSemVer.ps1") -Path $script:testXmlPath -IncrementPatch
     #         $version = GetXmlValue -Identifier "Patch"
     #         It "Increments only the Patch version" {
     #             $version | Should -Be "1"
@@ -35,12 +35,12 @@ Describe "SimpleSemVer.ps1"{
     #     }
     #     finally {
     #         # need to delete after every test
-    #         Remove-Item -Path $testXmlPath
+    #         Remove-Item -Path $script:testXmlPath
     #     }
     # }
     # Context "Only Minor" {
     #     try {
-    #         &(Resolve-Path "$here\..\src\SimpleSemVer.ps1") -Path $testXmlPath -IncrementMinor
+    #         &(Resolve-Path "$here\..\src\SimpleSemVer.ps1") -Path $script:testXmlPath -IncrementMinor
     #         $version = GetXmlValue -Identifier "Minor"
     #         It "Increments only the Minor version" {
     #             $version | Should -Be "1"
@@ -51,12 +51,12 @@ Describe "SimpleSemVer.ps1"{
     #     }
     #     finally {
     #         # need to delete after every test
-    #         Remove-Item -Path $testXmlPath
+    #         Remove-Item -Path $script:testXmlPath
     #     }
     # }
     # Context "Only Major" {
     #     try {
-    #         &(Resolve-Path "$here\..\src\SimpleSemVer.ps1") -Path $testXmlPath -IncrementMajor
+    #         &(Resolve-Path "$here\..\src\SimpleSemVer.ps1") -Path $script:testXmlPath -IncrementMajor
     #         $version = GetXmlValue -Identifier "Major"
     #         It "Increments only the Major version" {
     #             $version | Should -Be "1"
@@ -67,14 +67,14 @@ Describe "SimpleSemVer.ps1"{
     #     }
     #     finally {
     #         # need to delete after every test
-    #         Remove-Item -Path $testXmlPath
+    #         Remove-Item -Path $script:testXmlPath
     #     }
     # }
     # Context "Minor and Patch" {
     #     try {
-    #         &(Resolve-Path "$here\..\src\SimpleSemVer.ps1") -Path $testXmlPath -IncrementPatch
+    #         &(Resolve-Path "$here\..\src\SimpleSemVer.ps1") -Path $script:testXmlPath -IncrementPatch
     #         $firstPatch = GetXmlValue -Identifier "Patch"
-    #         &(Resolve-Path "$here\..\src\SimpleSemVer.ps1") -Path $testXmlPath -IncrementMinor
+    #         &(Resolve-Path "$here\..\src\SimpleSemVer.ps1") -Path $script:testXmlPath -IncrementMinor
     #         $firstMinor = GetXmlValue -Identifier "Minor"
     #         $secondPatch = GetXmlValue -Identifier "Patch"
     #         It "Sets the Patch version first" {
@@ -92,7 +92,7 @@ Describe "SimpleSemVer.ps1"{
     #     }
     #     finally {
     #         # need to delete after every test
-    #         Remove-Item -Path $testXmlPath
+    #         Remove-Item -Path $script:testXmlPath
     #     }
     # }
 }
