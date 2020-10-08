@@ -25,15 +25,15 @@ Param(
 function GenerateXmlTemplate {
     # get an XMLTextWriter to create the XML
     $XmlWriter = New-Object System.XMl.XmlTextWriter($Path,$Null)
-    
+
     # choose a pretty formatting:
     $XmlWriter.Formatting = 'Indented'
     $XmlWriter.Indentation = 1
     $XmlWriter.IndentChar = "`t"
-    
+
     # write the header
     $XmlWriter.WriteStartDocument()
-    
+
     # set XSL statements
     $XmlWriter.WriteProcessingInstruction("xml-stylesheet", "type='text/xsl' href='style.xsl'")
 
@@ -96,9 +96,9 @@ function IncrementPatch {
     $xml.Save($Path)
 }
 
-Write-Host "Testing path"
+Write-Verbose "Testing path"
 if (!(Test-Path $Path)) {
-    Write-Host "File not found, generating an empty xml"
+    Write-Verbose "File not found, generating an empty xml"
     GenerateXmlTemplate
 }
 
