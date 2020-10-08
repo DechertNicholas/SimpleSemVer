@@ -15,9 +15,9 @@ function GetXmlValue ([string]$Identifier) {
 Describe "SimpleSemVer.ps1"{
     Context "File Creation" {
         It "Creates the Version file if it does not exist" {
+            Write-Output "Xml Path should still be $testXmlPath"
+            Write-Output "Here is $here"
             &(Resolve-Path "$here\..\src\SimpleSemVer.ps1") -Path $testXmlPath -IncrementPatch
-            Write-Host "Does the file exist? $(Test-Path $testXmlpath)"
-            Get-ChildItem $here
         }
     }
     # Context "Only Patch" {
