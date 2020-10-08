@@ -23,3 +23,11 @@ steps:
     filePath: 'AzureHelperFunctions/RunPester.ps1'
     failOnStderr: true
     workingDirectory: '$(Pipeline.Workspace)/s'
+
+- task: PublishTestResults@2
+  displayName: 'Upload Test Results'
+  inputs:
+    testResultsFormat: 'XUnit'
+    testResultsFiles: '**/TEST*.xml'
+    searchFolder: '$(Common.TestResultsDirectory)'
+    failTaskOnFailedTests: true
