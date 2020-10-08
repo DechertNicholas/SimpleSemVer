@@ -14,10 +14,12 @@ steps:
   displayName: 'Install Pester'
   inputs:
     filePath: 'AzureHelperFunctions/InstallPester.ps1'
+    failOnStderr: true
     workingDirectory: '$(Pipeline.Workspace)/s'
 
 - task: PowerShell@2
   displayName: 'Run Pester Tests'
   inputs:
     filePath: 'AzureHelperFunctions/RunPester.ps1'
+    failOnStderr: true
     workingDirectory: '$(Pipeline.Workspace)/s'
