@@ -6,3 +6,4 @@ $modules = Get-Module -ListAvailable
 if ($modules.Name -notcontains 'pester') {
     throw "Unable to install Pester`n$($modules.Name)"
 }
+Get-Module 'Pester'
