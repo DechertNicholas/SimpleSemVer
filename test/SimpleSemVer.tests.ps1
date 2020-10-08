@@ -17,7 +17,9 @@ Describe "SimpleSemVer.ps1"{
         It "Creates the Version file if it does not exist" {
             Write-Host "Xml Path should still be $script:testXmlPath"
             Write-Host "Here is $here"
-            #&(Resolve-Path "$here\..\src\SimpleSemVer.ps1") -Path $script:testXmlPath -IncrementPatch
+            &(Resolve-Path "$here\..\src\SimpleSemVer.ps1") -Path $script:testXmlPath -IncrementPatch
+            $exists = Test-Path $script:testXmlPath
+            $exists | Should -Be $true
         }
     }
     # Context "Only Patch" {
