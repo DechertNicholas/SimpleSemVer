@@ -20,7 +20,7 @@ variables:
 
 steps:
 - powershell: |
-      echo "##vso[build.updatebuildnumber]$(MAJOR).$(MINOR).$(PATCH).$(BUILDNUM)"
+      echo "##vso[build.updatebuildnumber]$(VERSION)"
   name: SMBN
   displayName: Set Build Name
 
