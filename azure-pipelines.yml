@@ -33,36 +33,34 @@ stages:
 - stage: Tests
   displayName: Run tests
   jobs:
-  - job: PrepEnv
-    displayName: Prepare Environment
+  - job: RunTests
+    displayName: Pester tests
     steps:
-    - checkout: none
     - task: PowerShell@2
       displayName: 'Install Pester'
       inputs:
         filePath: 'AzureHelperFunctions/InstallPester.ps1'
         failOnStderr: true
         workingDirectory: '$(Pipeline.Workspace)/s'
-  - job: RunPester
-    dependsOn: PrepEnv
-    displayName: Pester Tests
-    steps:
-    - checkout: none
     - task: PowerShell@2
-      displayName: 'Run Pester Tests'
+      displayName: 'Run Pester tests'
       inputs:
         filePath: 'AzureHelperFunctions/RunPester.ps1'
         failOnStderr: true
         workingDirectory: '$(Pipeline.Workspace)/s'
     - task: PublishTestResults@2
-      displayName: 'Upload Test Results'
+      displayName: 'Upload test results'
       inputs:
         testResultsFormat: 'NUnit'
         testResultsFiles: '**/Test*.xml'
         searchFolder: '$(Common.TestResultsDirectory)'
         failTaskOnFailedTests: true
     - task: PublishCodeCoverageResults@1
+      displayName: Publish code coverage
       inputs:
         codeCoverageTool: 'JaCoCo'
         summaryFileLocation: '$(Common.TestResultsDirectory)/CodeCov.xml'
         pathToSources: '$(System.DefaultWorkingDirectory)/src'
+
+# - stage: SetFileVer
+#   displayName: Set file versions
