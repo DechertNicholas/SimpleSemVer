@@ -20,15 +20,15 @@ variables:
 
 stages:
 - stage: SBN
-  displayName: Set Build Number
+  displayName: Prebuild work
   jobs:
   - job: SBN
-    displayName: Set Build Number
+    displayName: Set build number
     steps:
     - powershell: |
           echo "##vso[build.updatebuildnumber]$(VERSION)"
       name: SBN
-      displayName: Set Build Name
+      displayName: Set build number to version number
 
 
 
