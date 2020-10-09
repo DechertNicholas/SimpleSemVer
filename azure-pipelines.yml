@@ -36,6 +36,7 @@ stages:
   - job: PrepEnv
     displayName: Prepare Environment
     steps:
+    - checkout: none
     - task: PowerShell@2
       displayName: 'Install Pester'
       inputs:
@@ -46,6 +47,7 @@ stages:
     dependsOn: PrepEnv
     displayName: Pester Tests
     steps:
+    - checkout: none
     - task: PowerShell@2
       displayName: 'Run Pester Tests'
       inputs:
@@ -55,6 +57,7 @@ stages:
   - job: UploadResults
     dependsOn: RunPester
     steps:
+    - checkout: none
     - task: PublishTestResults@2
       displayName: 'Upload Test Results'
       inputs:
