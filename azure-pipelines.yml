@@ -23,6 +23,7 @@ stages:
   displayName: Set Build Number
   jobs:
   - job: SBN
+    displayName: Set Build Number
     steps:
     - powershell: |
           echo "##vso[build.updatebuildnumber]$(VERSION)"
