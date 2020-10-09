@@ -8,12 +8,12 @@
     <Version>0</Version>
   </Major>
   <Minor>
-    <Version>1</Version>
+    <Version>2</Version>
   </Minor>
   <Patch>
     <Version>0</Version>
   </Patch>
   <Special>
-    <Version>-alpha1-63</Version>
+    <Version>alpha63</Version>
   </Special>
 </VersionInfo>
