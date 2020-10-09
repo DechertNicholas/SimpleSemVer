@@ -30,26 +30,33 @@ stages:
       name: SBN
       displayName: Set build number to version number
 
-
-
-# - task: PowerShell@2
-#   displayName: 'Install Pester'
-#   inputs:
-#     filePath: 'AzureHelperFunctions/InstallPester.ps1'
-#     failOnStderr: true
-#     workingDirectory: '$(Pipeline.Workspace)/s'
-
-# - task: PowerShell@2
-#   displayName: 'Run Pester Tests'
-#   inputs:
-#     filePath: 'AzureHelperFunctions/RunPester.ps1'
-#     failOnStderr: true
-#     workingDirectory: '$(Pipeline.Workspace)/s'
-
-# - task: PublishTestResults@2
-#   displayName: 'Upload Test Results'
-#   inputs:
-#     testResultsFormat: 'NUnit'
-#     testResultsFiles: '**/TEST*.xml'
-#     searchFolder: '$(Common.TestResultsDirectory)'
-#     failTaskOnFailedTests: true
+- stage: Tests
+  displayName: Run Tests
+  jobs:
+  - job: PrepEnv
+    displayName: Prepare Environment
+    steps:
+    - task: PowerShell@2
+      displayName: 'Install Pester'
+      inputs:
+        filePath: 'AzureHelperFunctions/InstallPester.ps1'
+        failOnStderr: true
+        workingDirectory: '$(Pipeline.Workspace)/s'
+  - job: RunPester
+    displayName: Pester Tests
+    steps:
+    - task: PowerShell@2
+      displayName: 'Run Pester Tests'
+      inputs:
+        filePath: 'AzureHelperFunctions/RunPester.ps1'
+        failOnStderr: true
+        workingDirectory: '$(Pipeline.Workspace)/s'
+  - job: UploadResults
+    steps:
+    - task: PublishTestResults@2
+      displayName: 'Upload Test Results'
+      inputs:
+        testResultsFormat: 'NUnit'
+        testResultsFiles: '**/TEST*.xml'
+        searchFolder: '$(Common.TestResultsDirectory)'
+        failTaskOnFailedTests: true
