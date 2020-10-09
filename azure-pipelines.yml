@@ -9,7 +9,21 @@ trigger:
 
 pool: "Requiem Labs"
 
+variables:
+  # temporary, we will get this from SimpleSemVer eventually
+  major: '0'
+  minor: '2'
+  patch: '0'
+  prerelease: '-alpha1-'
+  buildnum: $[counter(variables['patch'], 0)]
+  version: '$(MAJOR).$(MINOR).$(PATCH).$(PRERELEASE)$(BUILDNUM)'
+
 steps:
+- powershell: |
+      echo "##vso[build.updatebuildnumber]$(MAJOR).$(MINOR).$(PATCH).$(BUILDNUM)"
+  name: SMBN
+  displayName: Set Build Name
+
 - task: PowerShell@2
   displayName: 'Install Pester'
   inputs:
