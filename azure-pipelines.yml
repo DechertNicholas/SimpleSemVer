@@ -43,6 +43,7 @@ stages:
         failOnStderr: true
         workingDirectory: '$(Pipeline.Workspace)/s'
   - job: RunPester
+    dependsOn: PrepEnv
     displayName: Pester Tests
     steps:
     - task: PowerShell@2
@@ -52,6 +53,7 @@ stages:
         failOnStderr: true
         workingDirectory: '$(Pipeline.Workspace)/s'
   - job: UploadResults
+    dependsOn: RunPester
     steps:
     - task: PublishTestResults@2
       displayName: 'Upload Test Results'
