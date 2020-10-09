@@ -9,9 +9,58 @@ trigger:
 
 pool: "Requiem Labs"
 
-steps:
-- task: Pester@10
-  inputs:
-    scriptFolder: '$(System.DefaultWorkingDirectory)\test\*'
-    resultsFile: '$(System.DefaultWorkingDirectory)\Test-Pester.XML'
-    usePSCore: False
+variables:
+  # temporary, we will get this from SimpleSemVer eventually
+  major: '0'
+  minor: '2'
+  patch: '0'
+  prerelease: '-alpha'
+  buildnum: $[counter(variables['patch'], 0)]
+  version: '$(MAJOR).$(MINOR).$(PATCH)$(PRERELEASE)$(BUILDNUM)'
+
+stages:
+- stage: SBN
+  displayName: Prebuild work
+  jobs:
+  - job: SBN
+    displayName: Set build number
+    steps:
+    - powershell: |
+          echo "##vso[build.updatebuildnumber]$(VERSION)"
+      name: SBN
+      displayName: Set build number to version number
+
+- stage: Tests
+  displayName: Run tests
+  jobs:
+  - job: RunTests
+    displayName: Pester tests
+    steps:
+    - task: PowerShell@2
+      displayName: 'Install Pester'
+      inputs:
+        filePath: 'AzureHelperFunctions/InstallPester.ps1'
+        failOnStderr: true
+        workingDirectory: '$(Pipeline.Workspace)/s'
+    - task: PowerShell@2
+      displayName: 'Run Pester tests'
+      inputs:
+        filePath: 'AzureHelperFunctions/RunPester.ps1'
+        failOnStderr: true
+        workingDirectory: '$(Pipeline.Workspace)/s'
+    - task: PublishTestResults@2
+      displayName: 'Upload test results'
+      inputs:
+        testResultsFormat: 'NUnit'
+        testResultsFiles: '**/Test*.xml'
+        searchFolder: '$(Common.TestResultsDirectory)'
+        failTaskOnFailedTests: true
+    - task: PublishCodeCoverageResults@1
+      displayName: Publish code coverage
+      inputs:
+        codeCoverageTool: 'JaCoCo'
+        summaryFileLocation: '$(Common.TestResultsDirectory)/CodeCov.xml'
+        pathToSources: '$(System.DefaultWorkingDirectory)/src'
+
+# - stage: SetFileVer
+#   displayName: Set file versions

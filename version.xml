@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<?xml-stylesheet type='text/xsl' href='style.xsl'?>
+<!--This file should be incremented with SimpleSemVer, do not manually edit unless you know what you are doing-->
+<!--Use this only to store and set version information in your program-->
+<!--You should not include this file in your release files-->
+<VersionInfo>
+  <Major>
+    <Version>0</Version>
+  </Major>
+  <Minor>
+    <Version>2</Version>
+  </Minor>
+  <Patch>
+    <Version>0</Version>
+  </Patch>
+  <Special>
+    <Version>-alpha63</Version>
+  </Special>
+</VersionInfo>
