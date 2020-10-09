@@ -54,10 +54,6 @@ stages:
         filePath: 'AzureHelperFunctions/RunPester.ps1'
         failOnStderr: true
         workingDirectory: '$(Pipeline.Workspace)/s'
-  - job: UploadResults
-    dependsOn: RunPester
-    steps:
-    - checkout: none
     - task: PublishTestResults@2
       displayName: 'Upload Test Results'
       inputs:
