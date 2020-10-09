@@ -31,7 +31,7 @@ stages:
       displayName: Set build number to version number
 
 - stage: Tests
-  displayName: Run Tests
+  displayName: Run tests
   jobs:
   - job: PrepEnv
     displayName: Prepare Environment
@@ -65,4 +65,4 @@ stages:
       inputs:
         codeCoverageTool: 'JaCoCo'
         summaryFileLocation: '**/CodeCov.xml'
-        pathToSources: '$(Common.TestResultsDirectory)'
+        pathToSources: '$(System.DefaultWorkingDirectory)/src'
