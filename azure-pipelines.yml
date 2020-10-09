@@ -57,6 +57,6 @@ stages:
       displayName: 'Upload Test Results'
       inputs:
         testResultsFormat: 'NUnit'
-        testResultsFiles: '**/TEST*.xml'
+        testResultsFiles: '**/Test*.xml'
         searchFolder: '$(Common.TestResultsDirectory)'
         failTaskOnFailedTests: true
