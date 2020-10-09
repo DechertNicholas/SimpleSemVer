@@ -64,5 +64,5 @@ stages:
     - task: PublishCodeCoverageResults@1
       inputs:
         codeCoverageTool: 'JaCoCo'
-        summaryFileLocation: '**/CodeCov.xml'
+        summaryFileLocation: '$(Common.TestResultsDirectory)/CodeCov.xml'
         pathToSources: '$(System.DefaultWorkingDirectory)/src'
