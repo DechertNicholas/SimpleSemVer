@@ -16,7 +16,7 @@ variables:
   patch: '0'
   prerelease: '-alpha1-'
   buildnum: $[counter(variables['patch'], 0)]
-  version: '$(MAJOR).$(MINOR).$(PATCH).$(PRERELEASE)$(BUILDNUM)'
+  version: '$(MAJOR).$(MINOR).$(PATCH)$(PRERELEASE)$(BUILDNUM)'
 
 steps:
 - powershell: |
