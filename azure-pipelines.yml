@@ -83,7 +83,7 @@ stages:
             $installed = Get-Module -ListAvailable -Name SimpleSemVer
             if ($installed.Name -ne "SimpleSemVer") {
               Write-Host "Not found. Installing..."
-              Install-Module -Name SimpleSemVer -Force
+              Install-Module -Name SimpleSemVer -Force -AllowPrerelease
             }
             Write-Host "Importing module..."
             Import-Module SimpleSemVer
