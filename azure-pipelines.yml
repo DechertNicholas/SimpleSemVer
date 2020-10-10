@@ -72,6 +72,10 @@ stages:
         inputs:
           targetType: 'inline'
           script: |
+            $repos = Get-PsRepository
+            if (!$repos.Name -eq "LabPsRepo") {
+              Register-PSRepository -Name LabPsRepo -SourceLocation '\\vega\LabPsRepo' -InstallationPolicy Trusted
+            }
             $installed = Get-Module -ListAvailable -Name SimpleSemVer
             if ($installed.Name -ne "SimpleSemVer") {
               Install-Module -Name SimpleSemVer -Force
