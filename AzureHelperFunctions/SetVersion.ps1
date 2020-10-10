@@ -24,7 +24,7 @@ Remove-Module SimpleSemVer -Force -ErrorAction Ignore
 Write-Host "Commiting new version"
 git config user.email "pipeline@dev.azure.com"
 git config user.name "Azure Pipelines"
-git checkout -b "$env:Build_SourceBranchName"
+git checkout "$env:Build_SourceBranchName"
 git status
 # git add "$env:SYSTEM_DEFAULTWORKINGDIRECTORY\version.xml"
 # git add "$env:SYSTEM_DEFAULTWORKINGDIRECTORY\src\SimpleSemVer.psd1"
