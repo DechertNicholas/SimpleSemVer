@@ -90,7 +90,7 @@ stages:
             }
             Write-Host "Importing module..."
             Import-Module SimpleSemVer
-            Set-SimpleSemVer -File $env:SYSTEM_DEFAULTWORKINGDIRECTORY/version.xml -Special "$("alpha" + $env:BUILDNUM)"
+            Set-SimpleSemVer -File $env:SYSTEM_DEFAULTWORKINGDIRECTORY/version.xml -Special "$("-alpha" + $env:BUILDNUM)"
             Get-SimpleSemVer -File $env:SYSTEM_DEFAULTWORKINGDIRECTORY/version.xml -GetVersionValueWithSpecial
             Remove-Module SimpleSemVer -Force -ErrorAction Ignore
           failOnStderr: true
