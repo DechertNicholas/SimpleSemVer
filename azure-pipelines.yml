@@ -68,6 +68,8 @@ stages:
   - job: IncrementPrerelease
     displayName: 'Increment on prerelease build'
     steps:
+      - checkout: self
+        persistCredentials: true
       - task: PowerShell@2
         displayName: "Install and increment"
         inputs:
