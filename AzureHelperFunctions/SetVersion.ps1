@@ -1,8 +1,10 @@
-Write-Host "Checking if repo is registered..."
+Write-Host "Checking out branch: $env:Build_SourceBranchName"
+git config user.email "pipeline@dev.azure.com"
+git config user.name "Azure Pipelines"
+git checkout "$env:Build_SourceBranchName"
+
+Write-Host "Checking if PsRepo is registered..."
 $repos = Get-PsRepository
-foreach ($repo in $repos) {
-    Write-Host $repo
-}
 if (!($repos.Name -eq "LabPsRepo")) {
     Write-Host "Not found. Registering..."
     Register-PSRepository -Name LabPsRepo -SourceLocation '\\vega\LabPsRepo' -InstallationPolicy Trusted -Verbose
@@ -15,16 +17,15 @@ if ($installed.Name -ne "SimpleSemVer") {
 }
 Write-Host "Importing module..."
 Import-Module SimpleSemVer
+Write-Host "Setting version.xml"
 Set-SimpleSemVer -File $env:SYSTEM_DEFAULTWORKINGDIRECTORY/version.xml -Special "$("-alpha" + $env:BUILDNUM)"
 Get-SimpleSemVer -File $env:SYSTEM_DEFAULTWORKINGDIRECTORY/version.xml -GetVersionValueWithSpecial
+Write-Host "Updating module manifest"
 Update-ModuleManifest -Path "$env:SYSTEM_DEFAULTWORKINGDIRECTORY/src/SimpleSemVer.psd1" -Prerelease "$("-alpha" + $env:BUILDNUM)"
 Test-ModuleManifest -Path "$env:SYSTEM_DEFAULTWORKINGDIRECTORY/src/SimpleSemVer.psd1"
 Remove-Module SimpleSemVer -Force -ErrorAction Ignore
 
 Write-Host "Commiting new version"
-git config user.email "pipeline@dev.azure.com"
-git config user.name "Azure Pipelines"
-git checkout "$env:Build_SourceBranchName"
 git status
 # git add "$env:SYSTEM_DEFAULTWORKINGDIRECTORY\version.xml"
 # git add "$env:SYSTEM_DEFAULTWORKINGDIRECTORY\src\SimpleSemVer.psd1"
