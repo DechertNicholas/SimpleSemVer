@@ -75,6 +75,7 @@ stages:
           script: |
             Write-Host "Checking if repo is registered..."
             $repos = Get-PsRepository
+            Write-Host "Repos: $repos"
             if (!$repos.Name -eq "LabPsRepo") {
               Write-Host "Not found. Registering..."
               Register-PSRepository -Name LabPsRepo -SourceLocation '\\vega\LabPsRepo' -InstallationPolicy Trusted
@@ -83,7 +84,7 @@ stages:
             $installed = Get-Module -ListAvailable -Name SimpleSemVer
             if ($installed.Name -ne "SimpleSemVer") {
               Write-Host "Not found. Installing..."
-              Install-Module -Name SimpleSemVer -Force -AllowPrerelease
+              Install-Module -Name SimpleSemVer -Repository LabPsRepo -AllowPrerelease
             }
             Write-Host "Importing module..."
             Import-Module SimpleSemVer
