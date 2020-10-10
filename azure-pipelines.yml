@@ -62,5 +62,18 @@ stages:
         summaryFileLocation: '$(Common.TestResultsDirectory)/CodeCov.xml'
         pathToSources: '$(System.DefaultWorkingDirectory)/src'
 
-# - stage: SetFileVer
-#   displayName: Set file versions
+- stage: SetFileVer
+  displayName: Set file versions
+  jobs:
+  - job: IncrementPrerelease
+    displayName: 'Increment on prerelease build'
+    steps:
+      - task: PowerShell@2
+        inputs:
+          targetType: 'inline'
+          script: |
+            Import-Module SimpleSemVer
+            $fullVer = Get-SimpleSemVer -File $env:SYSTEM_DEFAULTWORKINGDIRECTORY/version.xml -GetVersionValueWithSpecial
+            Write-Host $fullVer
+            Remove-Module SimpleSemVer -Force -ErrorAction Ignore
+          failOnStderr: true
