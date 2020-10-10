@@ -20,3 +20,11 @@ Get-SimpleSemVer -File $env:SYSTEM_DEFAULTWORKINGDIRECTORY/version.xml -GetVersi
 Update-ModuleManifest -Path "$env:SYSTEM_DEFAULTWORKINGDIRECTORY/src/SimpleSemVer.psd1" -Prerelease "$("-alpha" + $env:BUILDNUM)"
 Test-ModuleManifest -Path "$env:SYSTEM_DEFAULTWORKINGDIRECTORY/src/SimpleSemVer.psd1"
 Remove-Module SimpleSemVer -Force -ErrorAction Ignore
+
+Write-Host "Commiting new version"
+git config user.email "pipeline@dev.azure.com"
+git config user.name "Azure Pipelines"
+git add "$env:SYSTEM_DEFAULTWORKINGDIRECTORY\version.xml"
+git add "$env:SYSTEM_DEFAULTWORKINGDIRECTORY\src\SimpleSemVer.psd1"
+git commit -m "[skip ci] commit version back"
+git push
