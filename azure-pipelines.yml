@@ -78,7 +78,7 @@ stages:
             Write-Host "Repos: $repos"
             if (!$repos.Name -eq "LabPsRepo") {
               Write-Host "Not found. Registering..."
-              Register-PSRepository -Name LabPsRepo -SourceLocation '\\vega\LabPsRepo' -InstallationPolicy Trusted
+              Register-PSRepository -Name LabPsRepo -SourceLocation '\\vega\LabPsRepo' -InstallationPolicy Trusted -Verbose
             }
             Write-Host "Checking if module is installed..."
             $installed = Get-Module -ListAvailable -Name SimpleSemVer
