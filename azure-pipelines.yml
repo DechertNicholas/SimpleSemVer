@@ -69,17 +69,23 @@ stages:
     displayName: 'Increment on prerelease build'
     steps:
       - task: PowerShell@2
+        displayName: "Install and increment"
         inputs:
           targetType: 'inline'
           script: |
+            Write-Host "Checking if repo is registered..."
             $repos = Get-PsRepository
             if (!$repos.Name -eq "LabPsRepo") {
+              Write-Host "Not found. Registering..."
               Register-PSRepository -Name LabPsRepo -SourceLocation '\\vega\LabPsRepo' -InstallationPolicy Trusted
             }
+            Write-Host "Checking if module is installed..."
             $installed = Get-Module -ListAvailable -Name SimpleSemVer
             if ($installed.Name -ne "SimpleSemVer") {
+              Write-Host "Not found. Installing..."
               Install-Module -Name SimpleSemVer -Force
             }
+            Write-Host "Importing module..."
             Import-Module SimpleSemVer
             $fullVer = Get-SimpleSemVer -File $env:SYSTEM_DEFAULTWORKINGDIRECTORY/version.xml -GetVersionValueWithSpecial
             Write-Host "Version is $fullVer"
