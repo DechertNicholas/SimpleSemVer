@@ -72,8 +72,13 @@ stages:
         inputs:
           targetType: 'inline'
           script: |
+            $installed = Get-Module -ListAvailable -Name SimpleSemVer
+            if ($installed.Name -ne "SimpleSemVer") {
+              Install-Module -Name SimpleSemVer -Force
+            }
             Import-Module SimpleSemVer
             $fullVer = Get-SimpleSemVer -File $env:SYSTEM_DEFAULTWORKINGDIRECTORY/version.xml -GetVersionValueWithSpecial
-            Write-Host $fullVer
+            Write-Host "Version is $fullVer"
+            Write-Host "Buildnum? $env:BUILDNUM"
             Remove-Module SimpleSemVer -Force -ErrorAction Ignore
           failOnStderr: true
