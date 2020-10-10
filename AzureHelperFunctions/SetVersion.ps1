@@ -25,7 +25,8 @@ Write-Host "Commiting new version"
 git config user.email "pipeline@dev.azure.com"
 git config user.name "Azure Pipelines"
 git checkout -b "$env:Build_SourceBranchName"
-git add "$env:SYSTEM_DEFAULTWORKINGDIRECTORY\version.xml"
-git add "$env:SYSTEM_DEFAULTWORKINGDIRECTORY\src\SimpleSemVer.psd1"
-git commit -m "[skip ci] commit version back"
-git push
+git status
+# git add "$env:SYSTEM_DEFAULTWORKINGDIRECTORY\version.xml"
+# git add "$env:SYSTEM_DEFAULTWORKINGDIRECTORY\src\SimpleSemVer.psd1"
+# git commit -m "[skip ci] commit version back"
+# git push
