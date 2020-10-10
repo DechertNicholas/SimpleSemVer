@@ -90,8 +90,7 @@ stages:
             }
             Write-Host "Importing module..."
             Import-Module SimpleSemVer
-            $fullVer = Get-SimpleSemVer -File $env:SYSTEM_DEFAULTWORKINGDIRECTORY/version.xml -GetVersionValueWithSpecial
-            Write-Host "Version is $fullVer"
-            Write-Host "Buildnum? $env:BUILDNUM"
+            Set-SimpleSemVer -File $env:SYSTEM_DEFAULTWORKINGDIRECTORY/version.xml -Special "$("alpha" + $env:BUILDNUM)"
+            Get-SimpleSemVer -File $env:SYSTEM_DEFAULTWORKINGDIRECTORY/version.xml -GetVersionValueWithSpecial
             Remove-Module SimpleSemVer -Force -ErrorAction Ignore
           failOnStderr: true
